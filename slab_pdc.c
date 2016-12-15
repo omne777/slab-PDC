@@ -18,20 +18,6 @@
 
 #include "slab_pdc.h"
 
-void *
-kzalloc_pdc(size_t size, gfp_t flags, pdc_func_f pdc_func)
-{
-	pdc_t *p = NULL;
-
-	p = kzalloc(size, flags);
-	if (unlikely(!p))
-		return (NULL);
-
-	p->pdc_func = pdc_func;
-
-	return (p);
-}
-
 __always_inline static void
 call_rcu_pdc(struct rcu_head *head)
 {
@@ -49,6 +35,21 @@ call_rcu_pdc(struct rcu_head *head)
 	kfree(p);
 }
 
+void *
+kzalloc_pdc(size_t size, gfp_t flags, pdc_func_f pdc_func)
+{
+	pdc_t *p = NULL;
+
+	p = kzalloc(size, flags);
+	if (unlikely(!p))
+		return (NULL);
+
+	p->pdc_func = pdc_func;
+
+	return (p);
+}
+EXPORT_SYMBOL(kzalloc_pdc);
+
 void
 kfree_pdc(const void *obj)
 {
@@ -63,64 +64,22 @@ kfree_pdc(const void *obj)
 	else
 		kfree_rcu(p, rcu);
 }
-
-struct sample_struct {
-	pdc_t pdc;
-	char s[];
-};
-
-int
-sample_print_and_free(void *obj)
-{
-	struct sample_struct *q = obj;
-
-	printk("%s\n", q->s);
-
-	return (0);
-}
-
-struct sample_struct *p = NULL;
-struct sample_struct *r = NULL;
+EXPORT_SYMBOL(kfree_pdc);
 
 int
 slab_pdc_init(void)
 {
-	p = kzalloc_pdc(1024, GFP_KERNEL, NULL);
-	if (!p) {
-		printk("Memory allocation failure\n");
-		return (-1);
-	}
-	sprintf(p->s, "p - Hello World!!!");
+	printk(KERN_INFO "SLAB_PDC module loaded\n");
 
-	r = kzalloc_pdc(1024, GFP_KERNEL, sample_print_and_free);
-	if (!p) {
-		printk("Memory allocation failure\n");
-		return (-1);
-	}
-	sprintf(r->s, "r - Hello World!!!");
-
-	printk("Memory allocation succeed\n");
-	printk(KERN_INFO "Module loaded\n");
-	/*
-	 * A non 0 return means init_module failed; module can't be loaded.
-	 */
 	return 0;
 }
 
 void
 slab_pdc_exit(void)
 {
-	printk(KERN_INFO "Barrier wait before exit\n");
-
-	if (p)
-		printk(KERN_INFO "Memory has to be cleaned up\n");
-
-	kfree_pdc(p);
-	kfree_pdc(r);
-
 	rcu_barrier(); /* Wait until all in-flight call_rcu() callbacks complete */
 
-	printk(KERN_INFO "Module unloaded\n");
+	printk(KERN_INFO "SLAB_PDC module unloaded\n");
 }
 
 module_init(slab_pdc_init);
