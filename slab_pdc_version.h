@@ -19,7 +19,7 @@
 #define SLAB_PDC_MAINTAINER "paolo.ratm@gmail.com"
 
 #define SLAB_PDC_NAME  "SLAB_PDC"
-#define SLAB_PDC_MAJOR 0
+#define SLAB_PDC_MAJOR 1
 #define SLAB_PDC_MINOR 0
 #define SLAB_PDC_PATCH 0
 
