@@ -16,6 +16,7 @@
 #include <linux/version.h>
 #include <linux/types.h>
 
+#include "slab_pdc_version.h"
 #include "slab_pdc.h"
 
 __always_inline static void
@@ -87,5 +88,6 @@ module_exit(slab_pdc_exit);
 
 MODULE_AUTHOR("Paolo Missiaggia <paolo.ratm@gmail.com>");
 MODULE_DESCRIPTION("Kernel memory handling facilities");
+MODULE_VERSION(SLAB_PDC_VERSION_STR);
 
 MODULE_LICENSE("GPL");
