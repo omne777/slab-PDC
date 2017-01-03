@@ -46,5 +46,6 @@ typedef struct {
 
 void *kzalloc_pdc(size_t size, gfp_t flags, pdc_func_f pdc_func);
 void  kfree_pdc(const void *obj);
+void  pdc_wait_on_exit(void);
 
 #endif

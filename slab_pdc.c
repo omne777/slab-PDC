@@ -15,6 +15,7 @@
 #include <linux/moduleparam.h>
 #include <linux/version.h>
 #include <linux/types.h>
+#include <linux/rcupdate.h>
 
 #include "slab_pdc_version.h"
 #include "slab_pdc.h"
@@ -67,6 +68,13 @@ kfree_pdc(const void *obj)
 }
 EXPORT_SYMBOL(kfree_pdc);
 
+void
+pdc_wait_on_exit(void)
+{
+	return(rcu_barrier());
+}
+EXPORT_SYMBOL(pdc_wait_on_exit);
+
 int
 slab_pdc_init(void)
 {
@@ -78,7 +86,7 @@ slab_pdc_init(void)
 void
 slab_pdc_exit(void)
 {
-	rcu_barrier(); /* Wait until all in-flight call_rcu() callbacks complete */
+	pdc_wait_on_exit();
 
 	printk(KERN_INFO "SLAB_PDC module unloaded\n");
 }
