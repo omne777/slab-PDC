@@ -1,21 +1,15 @@
 MODULE_NAME := slab_pdc
 
 obj-m    := slab_pdc.o
-#kobj-objs := xxx.o
-#MODULE_SOURCES := slab_pdc.c
 
 WARN     := -W -Wall -Wstrict-prototypes -Wmissing-prototypes
 ccflag-y := -O2 -DMODULE -D__KERNEL__ ${WARN}
-#PWD      := $(shell pwd)
-#EXTRA_CFLAGS += -I$(src)
 
 KBUILD_DIR=$(shell sh ./scripts/find_kernel_src.sh)
 UNAME=$(shell uname -r)
 PWD := $(shell pwd)
 
-all: $(MODULE_NAME).ko
-
-$(MODULE_NAME).ko: $(MODULE_SOURCES)
+all:
 	@ $(MAKE) -C $(KBUILD_DIR)/ M=$(PWD) modules
 
 install_files: $(MODULE_NAME).ko
