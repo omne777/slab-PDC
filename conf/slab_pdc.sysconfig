@@ -1,4 +1,0 @@
-#!/bin/bash
-
-exec modprobe slab_pdc
-
