@@ -17,7 +17,7 @@
 
 #define SLAB_PDC_NAME  "SLAB_PDC"
 #define SLAB_PDC_MAJOR 1
-#define SLAB_PDC_MINOR 0
+#define SLAB_PDC_MINOR 1
 #define SLAB_PDC_PATCH 0
 #define SLAB_PDC_STR_H(x) #x
 #define SLAB_PDC_STR(x) SLAB_PDC_STR_H(x)
