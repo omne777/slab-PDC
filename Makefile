@@ -4,12 +4,12 @@
 # Exported heqaders SHALL be separated by a pipe '|'
 MOD_NAME       = slab_pdc
 PRJ_NAME       = slab-pdc
-MAJOR          = `cat slab_pdc_version.h |grep -P "\s+SLAB_PDC_MAJOR\s+" |perl -pe "s/.*SLAB_PDC_MAJOR ([0-9])/\1/g"`
-MINOR          = `cat slab_pdc_version.h |grep -P "\s+SLAB_PDC_MINOR\s+" |perl -pe "s/.*SLAB_PDC_MINOR ([0-9])/\1/g"`
+MAJOR          = `cat slab_pdc.h |grep -P "\s+SLAB_PDC_MAJOR\s+" |perl -pe "s/.*SLAB_PDC_MAJOR ([0-9])/\1/g"`
+MINOR          = `cat slab_pdc.h |grep -P "\s+SLAB_PDC_MINOR\s+" |perl -pe "s/.*SLAB_PDC_MINOR ([0-9])/\1/g"`
 VERSION        = $(MAJOR).$(MINOR)
 PRJ_FOLDER     = $(PRJ_NAME)-$(VERSION)
 TMP_DIRECTORY  = /usr/src/$(PRJ_FOLDER)
-BUILD_FILES    = slab_pdc.c slab_pdc.h slab_pdc_version.h Makefile LICENSE README.md
+BUILD_FILES    = slab_pdc.c slab_pdc.h Makefile LICENSE README.md
 BUILD_SCRIPTS  = dkms.conf dkms.post_build dkms.post_install dkms.post_remove $(MOD_NAME).modprobe.conf $(MOD_NAME).sysconfig
 EXP_HEADERS    = slab_pdc.h
 

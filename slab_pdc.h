@@ -15,6 +15,17 @@
 
 #include <linux/slab.h>
 
+#define SLAB_PDC_NAME  "SLAB_PDC"
+#define SLAB_PDC_MAJOR 1
+#define SLAB_PDC_MINOR 0
+#define SLAB_PDC_PATCH 0
+#define SLAB_PDC_STR_H(x) #x
+#define SLAB_PDC_STR(x) SLAB_PDC_STR_H(x)
+#define SLAB_PDC_VERSION(a, b, c) (((a) << 24) + ((b) << 16) + (c))
+#define SLAB_PDC_VERSION_STR \
+	SLAB_PDC_NAME ": " SLAB_PDC_STR(SLAB_PDC_MAJOR) "." \
+	SLAB_PDC_STR(SLAB_PDC_MINOR) "." SLAB_PDC_STR(SLAB_PDC_PATCH)
+
 /*
  * Requirements:
  * The first 2 element of the returned struct SHALL be:

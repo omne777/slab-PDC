@@ -17,7 +17,6 @@
 #include <linux/types.h>
 #include <linux/rcupdate.h>
 
-#include "slab_pdc_version.h"
 #include "slab_pdc.h"
 
 __always_inline static void
