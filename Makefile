@@ -10,7 +10,7 @@ VERSION        = $(MAJOR).$(MINOR)
 PRJ_FOLDER     = $(PRJ_NAME)-$(VERSION)
 TMP_DIRECTORY  = /usr/src/$(PRJ_FOLDER)
 BUILD_FILES    = slab_pdc.c slab_pdc.h Makefile LICENSE README.md
-BUILD_SCRIPTS  = dkms.conf dkms.post_build dkms.post_install dkms.post_remove $(MOD_NAME).modprobe.conf $(MOD_NAME).sysconfig
+BUILD_SCRIPTS  = dkms.conf dkms.post_build dkms.post_install dkms.post_remove $(MOD_NAME).modprobe.conf $(MOD_NAME).sysconfig $(MOD_NAME).sysctl
 EXP_HEADERS    = slab_pdc.h
 
 WARN          := -W -Wall -Wstrict-prototypes -Wmissing-prototypes
@@ -49,21 +49,28 @@ dkms_make_env: dkms_clean_env
 	@echo "POST_INSTALL=dkms.post_install" >> dkms.conf
 	@echo "AUTOINSTALL=\"yes\"" >> dkms.conf
 	@echo "REMAKE_INITRD=no" >> dkms.conf
-	@echo "POST_BUILD=\"dkms.post_build $(MOD_NAME) \$$dkms_tree/\$$module/\$$module_version/build/Module.symvers\"" >> dkms.conf
+	@echo "POST_BUILD=\"dkms.post_build $(MOD_NAME) \$$dkms_tree/\$$module/\$$module_version\"" >> dkms.conf
 	@echo "POST_REMOVE=\"dkms.post_remove \$${kernelver}\"" >> dkms.conf
 	@echo "#!/bin/bash" > dkms.post_build
-	@echo "cp \$$2 ./\$$1-Module.symvers" >> dkms.post_build
+	@echo "POST_BUILD=\"dkms.post_build $(MOD_NAME) \$$dkms_tree/\$$module/\$$module_version\"" >> dkms.conf
+	@echo "cp -v \$$2/build/Module.symvers \$$2/source/\$$1-Module.symvers" >> dkms.post_build
 	@echo "#!/bin/bash" > dkms.post_install
 	@echo "mkdir -p /lib/modules/\$$kernelver/build/include/$(MOD_NAME)" >> dkms.post_install
 	@echo "install -m 644 $(EXP_HEADERS) /lib/modules/\$$kernelver/build/include/$(MOD_NAME)/." >> dkms.post_install
 	@echo "echo \"Installing headers: /lib/modules/\$$kernelver/build/include/$(MOD_NAME)\"" >> dkms.post_install
+	@echo "if [[ ! \`grep -e \"$(MOD_NAME)\" /etc/modules\` ]]; then" >> dkms.post_install
+	@echo "	echo \"Adding $(MOD_NAME) module to /etc/modules \" " >> dkms.post_install
+	@echo "	echo \"$(MOD_NAME)\" >> /etc/modules" >> dkms.post_install
+	@echo "fi" >> dkms.post_install
 	@echo "install -m 644 $(MOD_NAME).modprobe.conf /etc/modprobe.d/$(MOD_NAME).conf" >> dkms.post_install
+	@echo "install -m 644 $(MOD_NAME).sysctl /etc/sysctl.d/$(MOD_NAME).conf" >> dkms.post_install
 	@echo "[ -d /etc/sysconfig/modules ] && install -m 755 $(MOD_NAME).sysconfig /etc/sysconfig/modules/$(MOD_NAME).modules || :" >> dkms.post_install
 	@echo "#!/bin/bash" > dkms.post_remove
 	@echo "rm -rf /lib/modules/\$$1/build/include/$(MOD_NAME)" >> dkms.post_remove
 	@echo "rm -rf /etc/modprobe.d/$(MOD_NAME).conf" >> dkms.post_remove
 	@echo "rm -rf /etc/sysconfig/modules/$(MOD_NAME).modules" >> dkms.post_remove
 	@echo "rm -rf /etc/sysctl.d/$(MOD_NAME).conf" >> dkms.post_remove
+	@echo "sed 's/$(MOD_NAME)//' -i /etc/modules" >> dkms.post_remove
 
 dkms_build: dkms_make_env
 	@rm -rf /var/lib/dkms/$(PRJ_NAME)
