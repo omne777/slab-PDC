@@ -1,6 +1,7 @@
 /*
- * Memory allocator with pre-distruction callback (PDC)
- * (C) 2016
+ * SLAB-PDC
+ * A memory allocator with pre-distruction callback (PDC).
+ * Copyright (C) 2016-2017 - Paolo Missiaggia - All Rights Reserved
  *
  * Authors:
  *         Paolo Missiaggia, <paolo.ratm@gmail.com>
@@ -18,7 +19,7 @@
 #define SLAB_PDC_NAME  "SLAB_PDC"
 #define SLAB_PDC_MAJOR 1
 #define SLAB_PDC_MINOR 1
-#define SLAB_PDC_PATCH 0
+#define SLAB_PDC_PATCH 1
 #define SLAB_PDC_STR_H(x) #x
 #define SLAB_PDC_STR(x) SLAB_PDC_STR_H(x)
 #define SLAB_PDC_VERSION(a, b, c) (((a) << 24) + ((b) << 16) + (c))

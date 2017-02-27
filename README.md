@@ -1,7 +1,22 @@
 # slab-PDC
-Small module to extend memory allocation and release in kernel space
+
+## Copyright
+
+Authors: Paolo Missiaggia, <paolo.ratm@gmail.com>
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License version 2 as published by
+the Free Software Foundation.
+
+Copyright (C) 2016-2017 - Paolo Missiaggia - All Rights Reserved
+
+## About
+
+SLAB-PDC, a memory allocator with pre-distruction callback (PDC).
 
 Allow to call a pre-distructor function before actually freeing memory.
+
+## Tech info
 
 Requirements:
 The first 2 element of the returned struct SHALL be:
@@ -27,4 +42,4 @@ struct foo {
 ```
 
 AAA: Do not perform non atomic actions inside "pdc_func"
-AAA: pdc_func SHALL not free the memory itself
+AAA: The pdc_func SHALL not free the memory itself
