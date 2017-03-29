@@ -78,6 +78,7 @@ dkms_build: dkms_make_env
 	@mkdir -p $(TMP_DIRECTORY)
 	@$(foreach ml, $(BUILD_FILES), cp $(ml) $(TMP_DIRECTORY) ;)
 	@$(foreach ml, $(BUILD_SCRIPTS), cp $(ml) $(TMP_DIRECTORY) ;)
+	@cp -r slab-pdc-dkms-mkdeb $(TMP_DIRECTORY)
 	@cd $(TMP_DIRECTORY)
 	@dkms add -m $(PRJ_NAME) -v $(VERSION)
 	@dkms build -m $(PRJ_NAME) -v $(VERSION)
