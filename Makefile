@@ -45,20 +45,20 @@ dkms_make_env: dkms_clean_env
 	@echo "MAKE[0]=\"make\"" >> dkms.conf
 	@echo "BUILT_MODULE_NAME[0]="\"$(MOD_NAME)\" >> dkms.conf
 	@echo "BUILT_MODULE_LOCATION[0]=./" >> dkms.conf
-	@echo "DEST_MODULE_LOCATION[0]="\"/extra\" >> dkms.conf
+	@echo "DEST_MODULE_LOCATION[0]="\"/updates\" >> dkms.conf
 	@echo "STRIP[0]=no" >> dkms.conf
-	@echo "POST_INSTALL=dkms.post_install" >> dkms.conf
+	@echo "POST_INSTALL=\"dkms.post_install $(MOD_NAME)\"" >> dkms.conf
 	@echo "AUTOINSTALL=\"yes\"" >> dkms.conf
-	@echo "REMAKE_INITRD=no" >> dkms.conf
+	@echo "REMAKE_INITRD=yes" >> dkms.conf
 	@echo "POST_BUILD=\"dkms.post_build $(MOD_NAME) \$$dkms_tree/\$$module/\$$module_version\"" >> dkms.conf
 	@echo "POST_REMOVE=\"dkms.post_remove \$${kernelver}\"" >> dkms.conf
 	@echo "#!/bin/bash" > dkms.post_build
-	@echo "POST_BUILD=\"dkms.post_build $(MOD_NAME) \$$dkms_tree/\$$module/\$$module_version\"" >> dkms.conf
 	@echo "cp -v \$$2/build/Module.symvers \$$2/source/\$$1-Module.symvers" >> dkms.post_build
 	@echo "#!/bin/bash" > dkms.post_install
 	@echo "mkdir -p /lib/modules/\$$kernelver/build/include/$(MOD_NAME)" >> dkms.post_install
 	@echo "install -m 644 $(EXP_HEADERS) /lib/modules/\$$kernelver/build/include/$(MOD_NAME)/." >> dkms.post_install
-	@echo "echo \"Installing headers: /lib/modules/\$$kernelver/build/include/$(MOD_NAME)\"" >> dkms.post_install
+	@echo "install -m 644 $(MOD_NAME)-Module.symvers /lib/modules/\$$kernelver/build/include/$(MOD_NAME)/." >> dkms.post_install
+	@echo "echo \"Installing headers and exported symbols in /lib/modules/\$$kernelver/build/include/$(MOD_NAME)\"" >> dkms.post_install
 	@echo "if [[ ! \`grep -e \"$(MOD_NAME)\" /etc/modules\` ]]; then" >> dkms.post_install
 	@echo "	echo \"Adding $(MOD_NAME) module to /etc/modules \" " >> dkms.post_install
 	@echo "	echo \"$(MOD_NAME)\" >> /etc/modules" >> dkms.post_install
@@ -67,10 +67,15 @@ dkms_make_env: dkms_clean_env
 	@echo "install -m 644 $(MOD_NAME).sysctl /etc/sysctl.d/$(MOD_NAME).conf" >> dkms.post_install
 	@echo "[ -d /etc/sysconfig/modules ] && install -m 755 $(MOD_NAME).sysconfig /etc/sysconfig/modules/$(MOD_NAME).modules || :" >> dkms.post_install
 	@echo "#!/bin/bash" > dkms.post_remove
+	@echo "echo \"Deleting /lib/modules/\$$1/build/include/$(MOD_NAME)\"" >> dkms.post_remove
 	@echo "rm -rf /lib/modules/\$$1/build/include/$(MOD_NAME)" >> dkms.post_remove
+	@echo "echo \"Deleting /etc/modprobe.d/$(MOD_NAME).conf\"" >> dkms.post_remove
 	@echo "rm -rf /etc/modprobe.d/$(MOD_NAME).conf" >> dkms.post_remove
+	@echo "echo \"Deleting /etc/sysconfig/modules/$(MOD_NAME).modules\"" >> dkms.post_remove
 	@echo "rm -rf /etc/sysconfig/modules/$(MOD_NAME).modules" >> dkms.post_remove
+	@echo "echo \"Deleting /etc/sysctl.d/$(MOD_NAME).conf\"" >> dkms.post_remove
 	@echo "rm -rf /etc/sysctl.d/$(MOD_NAME).conf" >> dkms.post_remove
+	@echo "echo \"Removing $(MOD_NAME) from /etc/modules\"" >> dkms.post_remove
 	@echo "sed 's/$(MOD_NAME)//' -i /etc/modules" >> dkms.post_remove
 
 dkms_build: dkms_make_env

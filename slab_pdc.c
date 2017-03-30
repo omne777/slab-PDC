@@ -78,7 +78,7 @@ EXPORT_SYMBOL(pdc_wait_on_exit);
 int
 slab_pdc_init(void)
 {
-	printk(KERN_INFO "SLAB_PDC module loaded\n");
+	printk(KERN_INFO "[%s] module loaded\n", SLAB_PDC_VERSION_STR);
 
 	return 0;
 }
@@ -88,7 +88,7 @@ slab_pdc_exit(void)
 {
 	pdc_wait_on_exit();
 
-	printk(KERN_INFO "SLAB_PDC module unloaded\n");
+	printk(KERN_INFO "[%s] module unloaded\n", SLAB_PDC_VERSION_STR);
 }
 
 module_init(slab_pdc_init);
