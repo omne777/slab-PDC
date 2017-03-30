@@ -19,7 +19,7 @@
 #define SLAB_PDC_NAME  "SLAB_PDC"
 #define SLAB_PDC_MAJOR 1
 #define SLAB_PDC_MINOR 1
-#define SLAB_PDC_PATCH 3
+#define SLAB_PDC_PATCH 4
 #define SLAB_PDC_STR_H(x) #x
 #define SLAB_PDC_STR(x) SLAB_PDC_STR_H(x)
 #define SLAB_PDC_VERSION(a, b, c) (((a) << 24) + ((b) << 16) + (c))
