@@ -1,0 +1,42 @@
+[slab_pdc 1.1.8] Changelog
+
+* [MK] fixed issue with superuser base.sh
+
+[slab_pdc 1.1.7] Changelog
+
+* [MK] Added build scripts to tools
+
+[slab_pdc 1.1.6] Changelog
+
+* Update Make install commands to generate and install DKMS deb
+
+[slab_pdc 1.1.5] Changelog
+
+* Add debber.sh to fulfill the build machine requirements
+
+[slab_pdc 1.1.4] Changelog
+
+* Export symbols file in a version agnostic path
+
+[slab_pdc 1.1.3] Changelog
+
+* Add patch field to versioning
+
+[slab_pdc 1.1.2] Changelog
+
+* Add DKMS template file to avoid DEB creation problems
+
+[slab_pdc 1.1.1] Changelog
+
+* Fix DEB creation to correctly interact with depmod in post_inst
+* Update file headers with a properly formed template
+* Add legal notices to the README file
+
+[slab_pdc 1.1.0] Changelog
+
+* Remove verison header
+* Add Makefile rule to create DKMS deb packet
+
+[slab_pdc 1.1.0] Changelog
+
+*slab PDC - A first implementation and sample
